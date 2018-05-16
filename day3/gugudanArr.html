@@ -8,18 +8,23 @@
 </head>
 <body>
     <h3>배열을 이용한 구구단 프로그램</h3>
-    <div id="result"></div>
     <script>
         var gugu = [];
-        var num = 2;
-        var arr = 0;
-        for(var i = 1; i<10; i++){
-            gugu[arr] = Number(i*num);
-            arr++;
+       
+        for(var num = 2; num <10; num++){
+            for(var i = 1; i<10; i++){
+                gugu[i] = Number(i*num);
+            }
+            document.write("<h4>"+ num +"단</h2><br>");
+            for(var j=1; j<10; j++){
+                var str = "";
+                str += `${num} X ${j} = ${gugu[j]}`+'<br>';
+                document.write(str);
+            }
+
         }
         console.log(gugu);
-        console.log(typeof gugu);
-        document.getElementById("result").innerHTML = gugu;
+        console.log(str);
     </script>
 </body>
 </html>
