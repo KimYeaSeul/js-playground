@@ -8,18 +8,22 @@
 </head>
 <body>
     <h1>문자열 계산기 구현하기</h1>
+    <label for="num1">첫번째 숫자</label><input type="text" id="num1">
+    <label for="num2">두번째 숫자</label><input type="text" id="num2">
+    <input type="button" id="btn" value="계산" onclick=main()>
     <div id="output"></div>
     <script>
         function main(){
             console.log("Calculator1");
             var out = document.getElementById("output");
-            out.innerHTML = "계산기 구현하기";
-            console.log(10*3);
-            console.log(10+3);
-            console.log(10-3);
-            console.log(10/3);
+            var num1 = Number(document.getElementById("num1").value);
+            var num2 = Number(document.getElementById("num2").value);
+            var plus = num1+num2;
+            var minu = num1-num2;
+            var mul = num1*num2;
+            var div = num1/num2;
+            out.innerHTML = `${num1} + ${num2} = ${plus} <br> ${num1} - ${num2} = ${minu} <br> ${num1} * ${num2} = ${mul} <br> ${num1} / ${num2} = ${div} `;
         }
-        main();
     </script>
 </body>
 </html>
