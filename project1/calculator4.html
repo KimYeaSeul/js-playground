@@ -10,19 +10,19 @@
     <h1>함수로 계산기 구현하기</h1>
     <div id="output">결과값은</div>
     <script>
-    function getFistValue(){
+    var input = {count:2};
+    input.getFistValue = function(){
         num1 = Number(prompt("1번째값을 입력하세요"));
         return num1;
-    }
-    var n = 2;
-    function getSecondValue(){
-        num2 = Number(prompt(n+"번째값을 입력하세요"));
-        n++;
-        return  num2;
-    }
+    };
 
-    var result = 0;
-    function getOperator(){
+    input.getSecondValue=function(){
+        num2 = Number(prompt(input.count+"번째값을 입력하세요"));
+        input.count++;
+        return  num2;
+    };
+
+    input.getOperator=function(){
         while(true){
            var op = prompt("연산자를 입력해주세요.");
             if(op ==='+' ||op ==='-' ||op ==='*' ||op ==='/' ||op ==='q' ){
@@ -32,10 +32,10 @@
             }
         }
         return op;
-    }
-    function calculate(num1, num2, op){
-        num1 = Number(num1);
-        num2 = Number(num2);
+    };
+
+    var calculate = {};
+    calculate.calculate=function(num1, num2, op){
         var result;
         if(op == '+'){
             result =  num1 + num2;
@@ -47,24 +47,26 @@
             result /= num1 / num2;
         }
         return result;
-    }
-    function print(val){
-        return '최종값은 ' + val;
+    };
 
-    }
+    var output = {};
+    output.out = document.getElementById("output");
+    output.print= function(val){
+        this.out.innerHTML = '최종값은 ' + val;
+
+    };
+
     function main(){
         var result=0;
-        var n1 = getFistValue();
+        var n1 = input.getFistValue();
         while(true){
-            var op = getOperator();
+            var op = input.getOperator();
             if(op === 'q') break;
-            var n2 = getSecondValue();
-            result = calculate(n1,n2,op);
+            var n2 = input.getSecondValue();
+            result = calculate.calculate(n1,n2,op);
         }
-        var out = document.getElementById('output');
-        out.innerHTML=print(result);
+        output.print(result);
     }
-    main();
     </script>
 </body>
 </html>
