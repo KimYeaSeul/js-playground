@@ -5,7 +5,7 @@
 ### postman : http 통신(get, post, delete, update)을 도와주는 Tool
 
 ## npm install
-### express
+### express : 노드로 구현한 웹서버 라이브러리
 ### mysql
 ### nodemon : nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
 
