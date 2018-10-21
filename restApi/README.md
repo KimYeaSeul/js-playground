@@ -9,7 +9,7 @@
 ### mysql
 ### nodemon : nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
 
-##실행 순서
+## 실행 순서
 ### 1. mysql server실행
 #### mysql.server start
 ### 2. 웹서버 실행
