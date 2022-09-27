@@ -1,53 +1,73 @@
 <template>
   <div class="container">
     <h1>Todo List</h1>
-    <form @submit="onSubmit" class="d-flex">
-      <div class="flex-grow-1 mr-2">
-        <input
-          class="form-control"
-          type="text"
-          v-model="todo"
-          placeholder="Type new to-do"
-        />
-      </div>
-      <div class="">
-        <button class="btn btn-primary" type="submit">Add</button>
-      </div>
-    </form>
-    <div class="card mt-2" v-for="todo in todos" v-bind:key="todo.id">
-      <div class="card-body p-2">
-        {{ todo.subject }}
-      </div>
+    <input
+      v-model="searchText"
+      class="form-control"
+      type="text"
+      placeholder="Search"
+    >
+    <hr>
+    <TodoSimpleForm @add-todo="addTodo" />
+    <div v-if="!filteredTodos.length">
+      There is noting to display
     </div>
+
+    <TodoList
+      :todos="filteredTodos"
+      @toggle-todo="toggleTodo"
+      @delete-todo="deleteTodo"
+    />
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import TodoSimpleForm from "@/components/TodoSimpleForm.vue";
+import TodoList from "@/components/TodoList.vue";
 
 export default {
+  components: { TodoSimpleForm, TodoList },
   setup() {
-    const todo = ref("");
-    const todos = ref([
-      { id: 1, subject: "휴대폰 바꾸기" },
-      { id: 2, subject: "밥먹기" },
-    ]);
-    const onSubmit = (e) => {
-      e.preventDefault();
+    const todos = ref([]);
 
-      todos.value.push({
-        id: Date.now(),
-        subject: todo.value,
-      });
-      todo.value = "";
+    const addTodo = (todo) => {
+      todos.value.push(todo);
     };
-    return { todo, todos, onSubmit };
+
+    const toggleTodo = (index) => {
+      todos.value[index].completed = !todos.value[index].completed;
+    };
+
+    const deleteTodo = (index) => {
+      todos.value.splice(index, 1);
+    };
+
+    const searchText = ref("");
+    const filteredTodos = computed(() => {
+      if (searchText.value) {
+        return todos.value.filter((todo) => {
+          return todo.subject.includes(searchText.value);
+        });
+      }
+      return todos.value;
+    });
+
+    return {
+      todos,
+      addTodo,
+      deleteTodo,
+      toggleTodo,
+      searchText,
+      filteredTodos,
+    };
   },
 };
 </script>
 
 <style>
-.name {
-  color: red;
+.todo {
+  color: gray;
+  text-decoration: line-through;
 }
 </style>
