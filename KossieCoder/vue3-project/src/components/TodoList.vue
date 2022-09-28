@@ -8,7 +8,7 @@
       <div class="form-check flex-grow-1">
         <!-- v-model="todo.completed" -->
         <input
-          :value="todo.completed"
+          :checked="todo.completed"
           class="form-check-input"
           type="checkbox"
           @change="toggleTodo(index)"
