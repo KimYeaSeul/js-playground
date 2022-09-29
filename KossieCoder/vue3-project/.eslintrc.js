@@ -7,6 +7,7 @@ module.exports = {
     // 'plugin:vue/vue3-strongly-recommended', // This option imposes formatting rules on your code to improve readability
   ],
   rules: {
+    "vue/multi-word-component-names": "off",
     // override/add rules settings here, such as:
     // 'vue/no-unused-vars': 'error'
   },

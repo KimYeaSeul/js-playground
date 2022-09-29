@@ -187,7 +187,7 @@
     },
     {
       "subject": "d",
-      "completed": false,
+      "completed": true,
       "id": 40
     },
     {
@@ -204,16 +204,6 @@
       "subject": "g",
       "completed": false,
       "id": 43
-    },
-    {
-      "subject": "sp",
-      "completed": false,
-      "id": 44
-    },
-    {
-      "subject": "아니요",
-      "completed": false,
-      "id": 45
     }
   ]
 }

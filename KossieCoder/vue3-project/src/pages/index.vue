@@ -1,5 +1,7 @@
 <template>
   <div>Home page</div>
 </template>
-<script></script>
+<script>
+export default {};
+</script>
 <style></style>
