@@ -1,6 +1,14 @@
 <template>
   <div>
-    <h1>Todo List</h1>
+    <div class="d-flex justify-content-between mb-3">
+      <h1>Todo List</h1>
+      <button
+        class="btn btn-primary"
+        @click="moveToCreatePage"
+      >
+        Create Todo
+      </button>
+    </div>
     <input
       v-model="searchText"
       class="form-control"
@@ -9,10 +17,10 @@
       @keyup.enter="searchTodo"
     >
     <hr>
-    <TodoSimpleForm @add-todo="addTodo" />
+    <!-- <TodoSimpleForm @add-todo="addTodo" />
     <div style="color: red">
       {{ error }}
-    </div>
+    </div> -->
     <div v-if="!todos.length">
       There is noting to display
     </div>
@@ -72,17 +80,25 @@
       </ul>
     </nav>
   </div>
+  <Toast
+    v-if="showToast"
+    :message="toastMessage"
+    :type="toastAlertType"
+  />
 </template>
 
 <script>
 import { ref, computed, watch } from "vue";
-import TodoSimpleForm from "@/components/TodoSimpleForm.vue";
 import TodoList from "@/components/TodoList.vue";
 import axios from "axios";
+import Toast from "@/components/Toast.vue";
+import { useToast } from "@/composables/toast";
+import { useRouter } from "vue-router";
 
 export default {
-  components: { TodoSimpleForm, TodoList },
+  components: { TodoList, Toast },
   setup() {
+    const router = useRouter();
     const todos = ref([]);
     const error = ref("");
     const numOfTodos = ref(0);
@@ -91,8 +107,10 @@ export default {
     const numOfPages = computed(() => {
       return Math.ceil(numOfTodos.value / limit);
     });
-
     const searchText = ref("");
+
+    const { triggerToast, toastAlertType, toastMessage, showToast } =
+      useToast();
 
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
@@ -100,12 +118,13 @@ export default {
         const res = await axios.get(
           `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`
         );
-        // console.log(res.headers["x-total-count"]);
         numOfTodos.value = res.headers["x-total-count"];
         todos.value = res.data;
+        triggerToast("Success get todos");
       } catch (err) {
         console.log(err);
         error.value = "Something went wrong.";
+        triggerToast("Something went wrong", "danger");
       }
     };
     getTodos();
@@ -125,6 +144,7 @@ export default {
         // todos.value.push(res.data); // 배열이 추가 안되엠빼앰
       } catch (err) {
         error.value = "Something went wrong.";
+        triggerToast("Something went wrong", "danger");
       }
       console.log("3");
     };
@@ -145,9 +165,9 @@ export default {
       }
     };
 
-    const deleteTodo = async (index) => {
+    const deleteTodo = async (id) => {
       error.value = "";
-      const id = todos.value[index].id;
+      // const id = todos.value[index].id;
       try {
         const res = await axios.delete("http://localhost:3000/todos/" + id);
         console.log(res);
@@ -156,6 +176,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = "Something went wrong.";
+        triggerToast("Something went wrong", "danger");
       }
     };
 
@@ -184,6 +205,11 @@ export default {
       getTodos(1);
     };
 
+    const moveToCreatePage = () => {
+      router.push({
+        name: "TodoCreate",
+      });
+    };
     return {
       todos,
       addTodo,
@@ -195,6 +221,11 @@ export default {
       numOfPages,
       currentPage,
       searchTodo,
+      toastMessage,
+      toastAlertType,
+      showToast,
+      triggerToast,
+      moveToCreatePage,
     };
   },
 };
