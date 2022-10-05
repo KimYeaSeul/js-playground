@@ -33,11 +33,14 @@
       </div>
     </div>
   </div>
-  <Modal
-    v-if="showModal"
-    @close="closeModal"
-    @delete="deleteTodo"
-  />
+
+  <Teleport to="#modal">
+    <Modal
+      v-if="showModal"
+      @close="closeModal"
+      @delete="deleteTodo"
+    />
+  </Teleport>
 </template>
 <script>
 import router from "@/router";
@@ -46,6 +49,7 @@ import Modal from "@/components/Modal.vue";
 import { ref } from "vue";
 export default {
   components: { Modal },
+
   props: {
     todos: {
       type: Array,

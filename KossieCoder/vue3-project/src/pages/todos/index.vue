@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="opacity: 0.5">
     <div class="d-flex justify-content-between mb-3">
       <h1>Todo List</h1>
       <button
@@ -118,6 +118,7 @@ export default {
         const res = await axios.get(
           `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`
         );
+        console.log(res)
         numOfTodos.value = res.headers["x-total-count"];
         todos.value = res.data;
         triggerToast("Success get todos");
