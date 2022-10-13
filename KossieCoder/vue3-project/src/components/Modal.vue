@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            Delete Todo
+            <slot name="title" />
           </h5>
           <button
             type="button"
@@ -13,23 +13,10 @@
           />
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete the todo?</p>
+          <slot name="body" />
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            @click="onClose"
-          >
-            Close
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="onDelete"
-          >
-            Delete
-          </button>
+          <slot name="footer" />
         </div>
       </div>
     </div>
@@ -37,16 +24,12 @@
 </template>
 <script>
 export default {
-  emits: ["close", "delete"],
+  emits: ["close"],
   setup(props, { emit }) {
     const onClose = () => {
       emit("close");
     };
-
-    const onDelete = () => {
-      emit("delete");
-    };
-    return { onClose, onDelete };
+    return { onClose };
   },
 };
 </script>
