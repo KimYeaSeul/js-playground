@@ -1,38 +1,36 @@
 <template>
-  <div
-    v-for="(todo, index) in todos"
-    :key="todo.id"
-    class="card mt-2"
-  >
-    <div
-      class="card-body p-2 d-flex align-items-center"
-      style="cursor: pointer"
-      @click="moveToPage(todo.id)"
-    >
-      <div class="flex-grow-1">
-        <!-- v-model="todo.completed" -->
-        <input
-          class="ms-2 me-2"
-          :checked="todo.completed"
-          type="checkbox"
-          @change="toggleTodo(index, $event)"
-          @click.stop
-        >
-        <!-- @change를 @click.stop으로 바꾸어 주어도 됨.! -->
-        <span :class="{ todo: todo.completed }">
-          {{ todo.subject }}
-        </span>
+  <List :items="todos">
+    <template #default="slotProps">
+      <div
+        class="card-body p-2 d-flex align-items-center"
+        style="cursor: pointer"
+        @click="moveToPage(slotProps.item.id)"
+      >
+        <div class="flex-grow-1">
+          <!-- v-model="todo.completed" -->
+          <input
+            class="ms-2 me-2"
+            :checked="todo.completed"
+            type="checkbox"
+            @change="toggleTodo(index, $event)"
+            @click.stop
+          >
+          <!-- @change를 @click.stop으로 바꾸어 주어도 됨.! -->
+          <span :class="{ todo: todo.completed }">
+            {{ todo.subject }}
+          </span>
+        </div>
+        <div>
+          <button
+            class="btn btn-danger btn-sm"
+            @click.stop="openModal(todo.id)"
+          >
+            Delete
+          </button>
+        </div>
       </div>
-      <div>
-        <button
-          class="btn btn-danger btn-sm"
-          @click.stop="openModal(todo.id)"
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
+    </template>
+  </List>
 
   <Teleport to="#modal">
     <Modal
@@ -47,9 +45,10 @@ import router from "@/router";
 import { useRouter } from "vue-router";
 // import Modal from "@/components/Modal.vue";
 import Modal from "@/components/DeleteModal.vue";
+import List from "@/components/List.vue";
 import { ref } from "vue";
 export default {
-  components: { Modal },
+  components: { Modal, List },
 
   props: {
     todos: {

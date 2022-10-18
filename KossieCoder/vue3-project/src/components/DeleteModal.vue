@@ -1,10 +1,10 @@
 <template>
   <Modal @close="onClose">
     <template #title>
-      Delete Todo !!!!!!!!
+      Delete Todo
     </template>
     <template #body>
-      Are you sure want to delete this todo? !!!!!!!!
+      Are you sure want to delete this todo?
     </template>
     <template #footer>
       <button
