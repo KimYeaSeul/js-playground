@@ -80,23 +80,17 @@
       </ul>
     </nav>
   </div>
-  <Toast
-    v-if="showToast"
-    :message="toastMessage"
-    :type="toastAlertType"
-  />
 </template>
 
 <script>
 import { ref, computed, watch } from "vue";
 import TodoList from "@/components/TodoList.vue";
-import axios from "axios";
-import Toast from "@/components/Toast.vue";
+import axios from "@/axios";
 import { useToast } from "@/composables/toast";
 import { useRouter } from "vue-router";
 
 export default {
-  components: { TodoList, Toast },
+  components: { TodoList },
   setup() {
     const router = useRouter();
     const todos = ref([]);
@@ -116,7 +110,7 @@ export default {
       currentPage.value = page;
       try {
         const res = await axios.get(
-          `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`
+          `todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`
         );
         console.log(res);
         numOfTodos.value = res.headers["x-total-count"];
@@ -136,7 +130,7 @@ export default {
       error.value = "";
       console.log("1");
       try {
-        const res = await axios.post("http://localhost:3000/todos", {
+        const res = await axios.post("todos", {
           subject: todo.subject,
           completed: todo.completed,
         });
@@ -156,7 +150,7 @@ export default {
       const id = todos.value[index].id;
       try {
         console.log("completeed");
-        await axios.patch("http://localhost:3000/todos/" + id, {
+        await axios.patch("todos/" + id, {
           completed: checked,
         });
         todos.value[index].completed = checked; // 초기 코드
@@ -170,7 +164,7 @@ export default {
       error.value = "";
       // const id = todos.value[index].id;
       try {
-        const res = await axios.delete("http://localhost:3000/todos/" + id);
+        const res = await axios.delete("todos/" + id);
         console.log(res);
         getTodos();
         // todos.value.splice(index, 1); // 초기 삭제 코드

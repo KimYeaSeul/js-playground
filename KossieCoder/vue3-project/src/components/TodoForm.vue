@@ -8,20 +8,11 @@
   >
     <div class="row">
       <div class="col-6">
-        <div class="form-group">
-          <label>Subject</label>
-          <input
-            v-model="todo.subject"
-            type="text"
-            class="form-control"
-          >
-          <div
-            v-if="subjectError"
-            style="color: red"
-          >
-            {{ subjectError }}
-          </div>
-        </div>
+        <Input
+          v-model:subject="todo.subject"
+          label="Subject"
+          :error="subjectError"
+        />
       </div>
       <div
         v-if="editing"
@@ -70,25 +61,26 @@
       Cancel
     </button>
   </form>
-  <transition name="fade">
+  <!-- <transition name="fade">
     <Toast
       v-if="showToast"
       :message="toastMessage"
       :type="toastAlertType"
     />
-  </transition>
+  </transition> -->
 </template>
 <script>
 import { useRoute, useRouter } from "vue-router";
-import { ref, computed, onUnmounted } from "vue";
-import axios from "axios";
+import { ref, computed, onUpdated } from "vue";
+import axios from "@/axios";
 import router from "@/router";
 import _ from "lodash";
-import Toast from "@/components/Toast.vue";
+// import Toast from "@/components/Toast.vue";
 import { useToast } from "@/composables/toast";
+import Input from "@/components/Input.vue";
 
 export default {
-  components: { Toast },
+  components: { Input },
   props: {
     editing: {
       type: Boolean,
@@ -108,13 +100,18 @@ export default {
     const loading = ref(false);
     const todoId = route.params.id;
 
+    //쉽게 확인하는 툴
+    onUpdated(() => {
+      console.log(todo.value.subject);
+    });
+
     const { triggerToast, toastAlertType, toastMessage, showToast } =
       useToast();
 
     const getTodo = async () => {
       loading.value = true;
       try {
-        const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
+        const res = await axios.get(`todos/${todoId}`);
         // todo.value = res.data;
         // originalTodo.value = res.data; // 같은 메모리를 바라보게 됨.
         todo.value = { ...res.data };
@@ -158,14 +155,20 @@ export default {
           body: todo.value.body,
         };
         if (props.editing) {
-          res = await axios.put(`http://localhost:3000/todos/${todoId}`, data);
+          res = await axios.put(`todos/${todoId}`, data);
           originalTodo.value = { ...res.data };
         } else {
-          res = await axios.post(`http://localhost:3000/todos`, data);
+          res = await axios.post(`todos`, data);
         }
         console.log("onsave" + props.editing);
         const message = props.editing ? "Updated!" : "Created!";
         triggerToast("Successfully " + message);
+
+        if (!props.editing) {
+          router.push({
+            name: "Todos",
+          });
+        }
       } catch (err) {
         console.log(err);
         triggerToast("Something went wrong", "danger");

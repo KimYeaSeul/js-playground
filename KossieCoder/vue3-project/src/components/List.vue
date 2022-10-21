@@ -1,10 +1,14 @@
 <template>
   <div
-    v-for="item in itmes"
+    v-for="(item, index) in items"
     :key="item.id"
     class="card mt-2"
   >
-    <slot :item="item" />
+    <!-- 데이터를 올려보내자. -->
+    <slot
+      :item="item"
+      :index="index"
+    />
   </div>
 </template>
 <script>

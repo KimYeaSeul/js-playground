@@ -1,29 +1,36 @@
 <template>
   <List :items="todos">
-    <template #default="slotProps">
+    <!-- List.vue에 보내기만 하면 for문 돌면서 item 을 이파일에서 쓸 수 없음. -->
+    <!--  그래서 List.vue에서 slot에 :item지정해서 TodoList.vue로 또 데이터 보내주고 -->
+    <!-- #default로 데이터 받아서 사용 -->
+    <!-- slotProps안에 :item 이 들어오게되는 것이지 -->
+    <!-- <template #default="slotProps"> -->
+    <!-- 구조분해할당을 이용하여 item만 가져올수도 있음 -->
+
+    <template #default="{ item, index }">
       <div
         class="card-body p-2 d-flex align-items-center"
         style="cursor: pointer"
-        @click="moveToPage(slotProps.item.id)"
+        @click="moveToPage(item.id)"
       >
         <div class="flex-grow-1">
           <!-- v-model="todo.completed" -->
           <input
             class="ms-2 me-2"
-            :checked="todo.completed"
+            :checked="item.completed"
             type="checkbox"
             @change="toggleTodo(index, $event)"
             @click.stop
           >
           <!-- @change를 @click.stop으로 바꾸어 주어도 됨.! -->
-          <span :class="{ todo: todo.completed }">
-            {{ todo.subject }}
+          <span :class="{ todo: item.completed }">
+            {{ item.subject }}
           </span>
         </div>
         <div>
           <button
             class="btn btn-danger btn-sm"
-            @click.stop="openModal(todo.id)"
+            @click.stop="openModal(item.id)"
           >
             Delete
           </button>
