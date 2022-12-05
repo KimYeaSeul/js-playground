@@ -13,6 +13,7 @@ export const useToast = () => {
   const toastAlertType = computed(() => store.state.toast.toastAlertType);
   const showToast = computed(() => store.state.toast.showToast);
 
+  console.log(toastAlertType.value);
   const triggerToast = (message, type = "success") => {
     store.dispatch("toast/triggerToast", message, type);
     // toastAlertType.value = type;

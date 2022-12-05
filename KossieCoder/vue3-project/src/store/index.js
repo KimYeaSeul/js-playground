@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
-import modules from "./modules/toast";
+import toast from "./modules/toast";
+
 export default createStore({
-  modules,
+  modules: { toast },
 });
